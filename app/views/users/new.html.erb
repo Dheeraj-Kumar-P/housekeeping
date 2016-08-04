@@ -1,0 +1,23 @@
+<% if flash[:notice] %>
+	<%= flash[:notice]%><br/>
+<% end %>
+<h2 style='text-align:center'>Create User</h2><br>
+<%= form_tag(:controller => "users", :action => "create",:id=>params[:id]) do %> 
+	<table class='table' style='width:40%' align='center'>
+	<tr><td><b>Name </td><td style='text-align:right'>: <%= text_field(:users,:name) %></tr></td>
+	<tr><td><b>Password </td><td style='text-align:right'>: <%= password_field(:users, :password)%></tr></td>
+	<tr><td><b>Confirm Password </td><td style='text-align:right'>: <%= password_field(:password,:password)%></tr></td>
+	<tr><td><b>Email </td><td style='text-align:right'>: <%= email_field(:users, :email)%></tr></td>
+	<tr><td><b>Phone no </td><td style='text-align:right'>: <%= number_field(:users, :phone_no)%></tr></td>
+	</table><br>
+	<b><p style='text-align:center'>Role : <%= radio_button(:roles, :id,Role.find_by(name:"Staff").id)%>&nbsp;Staff&emsp;<%=radio_button(:roles,:id,Role.find_by(name:"Maid").id)%>&nbsp;Maid<br><br>	
+	Shift :
+	<%= @shifts.each do |shift| %>
+		<%= radio_button(:shift, :id, shift.id) %>&nbsp;<%= shift.name %>&emsp;
+	<%end%></p>
+	<br><br><br>
+	<p style='text-align:center'>
+	<%= submit_tag "Create", class: 'btn btn-primary'%>
+<% end %></p><br>
+<p style='text-align:center'><%=link_to 'Back', {:controller =>'hotels',:action=>'show',:id =>params[:id]}, class: 'btn btn-info' %></p>
+

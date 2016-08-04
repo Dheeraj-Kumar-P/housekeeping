@@ -1,0 +1,17 @@
+<% if flash[:notice] %>
+	<%= flash[:notice]%><br/>
+<% end %>
+<h2>Create Hotel</h2>
+<%= form_tag(:controller => "staff", :action => "create") do %> 
+	<table>
+	<tr><td><b>Username </td><td>:<%= text_field(:users,:name) %></tr></td>
+	<tr><td><b>Password </td><td>:<%= password_field(:users,:password)%></tr></td>
+	<tr><td><b>Confirm Password </td><td>:<%= password_field(:account,:password)%></tr></td>
+	<tr><td><b>Phone No </td><td>:<%= phone_field(:users,:phone_no)%></tr></td>
+	<tr><td><b>Email Id </td><td>:<%= email_field(:users,:email)%></tr></td>
+	</table>
+	<p>&#160;&#160;&#160;<%= submit_tag "Create"%></p>
+<% end %>
+<%= form_tag(:controller => "admin",:action =>"show") do %>
+	&#160;&#160;&#160;&#160;<%= submit_tag "Back"%>
+<% end %> 

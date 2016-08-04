@@ -1,0 +1,41 @@
+<script>
+function time() {
+	var today = new Date();
+	var h = today.getHours();
+	var m = today.getMinutes();
+	var s =today.getSeconds();
+	m=checkTime(m);
+	s=checkTime(s);
+	today=today.toDateString();
+	document.getElementById('time').innerHTML = today + "&emsp; " + h + ":" + m + ":" + s + "&emsp;";
+	var t=setTimeout(time,500);
+}
+function checkTime(i) {
+	if (i<10) {i = "0" + i};
+	return i;
+}
+</script>
+<body onload="time()">
+<h1>&emsp;Dash Board</h1><div id="time" style="text-align:right">&emsp;</div><br><br>
+<table class="table table-bordered">
+	<tr>
+		<td>&emsp;<b>No. of Rooms to be Cleaned</b></td>
+		<td>:<%= @rooms.size%></td>
+	</tr>
+	<tr>
+		<td>&emsp;<b>Estimated Time </b></td>
+		<td>:<%= @rooms.size%> hr</td>
+	</tr>
+	<tr>
+		<td>&emsp;<b>Rooms Cleaned </b></td>
+		<td style='width:60%'>:<%= @tasks.size%></td>
+	</tr>
+</table><br><br>
+<p>&emsp;&emsp;&emsp;&emsp;<b>Rooms:
+<% if @rooms.first.nil?%>
+	&emsp;No room assigned<br>
+<% end %>
+<% @rooms.each do |room|%>
+	&emsp;<%= link_to room.no, {:controller =>'maid',:action=>'cleaning',:id =>room.id}, class: 'btn btn-primary' %><td>
+<%end%>	</b>	</p>
+</body>

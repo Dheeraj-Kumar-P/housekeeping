@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Housekeeping</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if(session[:user_id])%>
+  	<div align="right">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<%= link_to "Sign out", signout_path, id: "sign_out" %>&emsp;</div>
+    <%end%>
+    <%= yield %>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<h2>&emsp;Home</h2>
+<p style='text-align:right'> 
+	<%= link_to 'Create Hotel', new_hotel_path, class: 'btn btn-info'%>&emsp;&emsp;
+</p>
+<table style="width:40%">
+	<tr>
+	<th style='width:25%'><th>
+	<th style='text-align:center'><h4>Hotels</h4></th>
+	<th style='width:25%'><th>
+	</tr>
+	<%= @hotels.each do |hotel|%>
+	<tr>
+		<td style='width:25%'><td>
+		<td style='text-align:center'>&emsp;<%= link_to hotel.name, {:controller =>'hotels',:action=>'show',:id =>hotel.id},class: 'btn btn-primary btn-block'%></td>
+		<td style='width:25%'><td>
+	</tr>
+	<%end%>
+</table>

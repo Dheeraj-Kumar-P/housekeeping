@@ -1,0 +1,42 @@
+                     Prefix Verb   URI Pattern                            Controller#Action
+            sessions_create GET    /sessions/create(.:format)             sessions#create
+           sessions_destroy GET    /sessions/destroy(.:format)            sessions#destroy
+                   sessions POST   /sessions(.:format)                    sessions#create
+                    session DELETE /sessions/:id(.:format)                sessions#destroy
+auth_google_oauth2_callback GET    /auth/google_oauth2/callback(.:format) sessions#create
+               auth_failure GET    /auth/failure(.:format)                redirect(301, /)
+                    signout GET    /signout(.:format)                     sessions#destroy
+                login_login GET    /login/login(.:format)                 login#login
+                       root GET    /                                      login#login
+                 login_auth GET    /login/auth(.:format)                  login#auth
+                 login_auht POST   /login/auht(.:format)                  login#auht
+                login_block GET    /login/block(.:format)                 login#block
+                            POST   /login/block(.:format)                 login#block
+               login_submit GET    /login/submit(.:format)                login#submit
+                            POST   /login/submit(.:format)                login#submit
+                  hotel_new GET    /hotels/:hotel_id/new(.:format)        hotels#new
+                     hotels GET    /hotels(.:format)                      hotels#index
+                            POST   /hotels(.:format)                      hotels#create
+                  new_hotel GET    /hotels/new(.:format)                  hotels#new
+                 edit_hotel GET    /hotels/:id/edit(.:format)             hotels#edit
+                      hotel GET    /hotels/:id(.:format)                  hotels#show
+                            PATCH  /hotels/:id(.:format)                  hotels#update
+                            PUT    /hotels/:id(.:format)                  hotels#update
+                            DELETE /hotels/:id(.:format)                  hotels#destroy
+                      admin GET    /admin/:id(.:format)                   admin#show
+                  staff_new GET    /staff/new(.:format)                   staff#new
+                            POST   /staff/new(.:format)                   staff#new
+               staff_create GET    /staff/create(.:format)                staff#create
+                            POST   /staff/create(.:format)                staff#create
+                 staff_show GET    /staff/show(.:format)                  staff#show
+                            POST   /staff/show(.:format)                  staff#show
+                  maid_show GET    /maid/show(.:format)                   maid#show
+                            POST   /maid/show(.:format)                   maid#show
+                  maid_task GET    /maid/task(.:format)                   maid#task
+                            POST   /maid/task(.:format)                   maid#task
+              maid_cleaning GET    /maid/cleaning(.:format)               maid#cleaning
+              maid_cleannig POST   /maid/cleannig(.:format)               maid#cleannig
+                 maid_start GET    /maid/start(.:format)                  maid#start
+                            POST   /maid/start(.:format)                  maid#start
+                  maid_stop GET    /maid/stop(.:format)                   maid#stop
+                            POST   /maid/stop(.:format)                   maid#stop
