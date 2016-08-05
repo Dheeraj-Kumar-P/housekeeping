@@ -16,7 +16,6 @@ class UsersController < ApplicationController
       redirect_to :action => 'new', :id => params[:id]
     else
       pass=Digest::MD5.hexdigest(params[:users][:password])
-      byebug
       User.create(:name => params[:users][:name], :password => pass, :email => params[:users][:email], :phone_no => params[:users][:phone_no], :is_active => 1, :hotel_id => params[:id], :role_id => params[:roles][:id], :shift_id => params[:shift][:id])
       Salary.create(:user_id => User.last.id)
       redirect_to :controller => 'hotels', :action => 'show', :id => params[:id]
