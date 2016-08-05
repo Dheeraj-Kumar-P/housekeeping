@@ -1,22 +1,5 @@
-<script>
-function time() {
-	var today = new Date();
-	var h = today.getHours();
-	var m = today.getMinutes();
-	var s =today.getSeconds();
-	m=checkTime(m);
-	s=checkTime(s);
-	today=today.toDateString();
-	document.getElementById('time').innerHTML = today + "&emsp; " + h + ":" + m + ":" + s + "&emsp;";
-	var t=setTimeout(time,500);
-}
-function checkTime(i) {
-	if (i<10) {i = "0" + i};
-	return i;
-}
-</script>
-<body onload="time()">
-<h1>Cleaning Task</h1><div id="time" style="text-align:right">&emsp;</div><br>
+<body>
+<h1>Cleaning Task</h1><br>
 <h1>&emsp;&emsp;<%= @room.no%> :	</h1>
 <br>
 <%if (@task.start_time.nil?)%>

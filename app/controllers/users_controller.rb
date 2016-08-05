@@ -14,6 +14,9 @@ class UsersController < ApplicationController
     elsif params[:users][:password] != params[:password][:password]
       flash[:notice] = 'Password fiels does not match!!!'
       redirect_to :action => 'new', :id => params[:id]
+    elsif User.exists?(name: params[:users][:name])
+      flash[:notice] = 'User already exists!!!'
+      redirect_to :action => 'new', :id => params[:id]
     else
       pass=Digest::MD5.hexdigest(params[:users][:password])
       User.create(:name => params[:users][:name], :password => pass, :email => params[:users][:email], :phone_no => params[:users][:phone_no], :is_active => 1, :hotel_id => params[:id], :role_id => params[:roles][:id], :shift_id => params[:shift][:id])

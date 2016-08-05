@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :login, only: [:new, :create]
   get 'login/block'
   get 'login/ath'
+  get 'application/logged'
   resources :hotels do
     get 'new', on: :member
     post 'block', on: :member

@@ -1,22 +1,6 @@
-<script>
-function time() {
-	var today = new Date();
-	var h = today.getHours();
-	var m = today.getMinutes();
-	var s =today.getSeconds();
-	m=checkTime(m);
-	s=checkTime(s);
-	today=today.toDateString();
-	document.getElementById('time').innerHTML = today + "&emsp; " + h + ":" + m + ":" + s + "&emsp;";
-	var t=setTimeout(time,500);
-}
-function checkTime(i) {
-	if (i<10) {i = "0" + i};
-	return i;
-}
-</script>
-<body onload="time()">
-<h1>&emsp;Dash Board</h1><div id="time" style="text-align:right">&emsp;</div><br><br>
+
+<body>
+<h1>&emsp;Dash Board</h1><br><br>
 <table class="table table-bordered">
 	<tr>
 		<td>&emsp;<b>No. of Rooms to be Cleaned</b></td>
@@ -37,5 +21,5 @@ function checkTime(i) {
 <% end %>
 <% @rooms.each do |room|%>
 	&emsp;<%= link_to room.no, {:controller =>'maid',:action=>'cleaning',:id =>room.id}, class: 'btn btn-primary' %><td>
-<%end%>	</b>	</p>
+<%end%>	</b></p>
 </body>

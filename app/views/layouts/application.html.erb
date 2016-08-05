@@ -1,4 +1,23 @@
 <!DOCTYPE html>
+
+<script>
+function time() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s =today.getSeconds();
+  m=checkTime(m);
+  s=checkTime(s);
+  today=today.toDateString();
+  document.getElementById('time').innerHTML = today + "&emsp; " + h + ":" + m + ":" + s + "&emsp;";
+  var t=setTimeout(time,500);
+}
+function checkTime(i) {
+  if (i<10) {i = "0" + i};
+  return i;
+}
+</script>
+
 <html>
   <head>
     <title>Housekeeping</title>
@@ -8,9 +27,11 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body onload="time()">
     <% if(session[:user_id])%>
-  	<div align="right">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<%= link_to "Sign out", signout_path, id: "sign_out" %>&emsp;</div>
+    <div id="time" style="text-align:right;color:gray;">&emsp;</div><br>
+  	<div align="right"><%= link_to "Home", controller: 'application', action: 'logged'%>&emsp;
+    <%= link_to "Sign out", signout_path, id: "sign_out" %>&emsp;</div>
     <%end%>
     <%= yield %>
   </body>

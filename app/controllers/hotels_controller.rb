@@ -8,10 +8,13 @@ class HotelsController < ApplicationController
     if (params[:hotels][:name].empty? || params[:hotels][:no_of_rooms].empty? || params[:hotels][:no_of_staff].empty? || params[:hotels][:no_of_maid].empty?)
       flash[:notice] = "Enter Data!!!"
       redirect_to :action => 'new'
+    elsif Hotel.exists?(name: params[:hotels][:name])
+      flash[:notice] = "Hotel name already exists!!!"
+      redirect_to :action => 'new'
     else
       Hotel.create(:name=>params[:hotels][:name],:no_of_rooms=>params[:hotels][:no_of_rooms],:no_of_staff=>params[:hotels][:no_of_staff],:no_of_maid=>params[:hotels][:no_of_maid])
       for iteration in 101..((params[:hotels][:no_of_rooms].to_i) + 100)
-      Room.create(:no=>iteration,:hotel_id=>Hotel.last.id,:estimated_time=>"01:00:00",:status=>"clean")
+      Room.create(:no=>iteration,:hotel_id=>Hotel.last.id,:estimated_time=>"01:00:00",:status=>"dirty")
     end
       redirect_to controller: 'admin', action: 'show', id: session[:user_id]
     end
