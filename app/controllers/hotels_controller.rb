@@ -27,14 +27,12 @@ class HotelsController < ApplicationController
   end
 
   def block
-    @users = User.where(hotel_id: params[:id]).find_each
-    @users.each do |user|
-      if params[user.id.to_s]['true'] == '1'
-        User.update(user.id, is_active: '0')
-      else
-        User.update(user.id, is_active: '1')
-      end
+    @user = User.find(params[:id])
+    if @user.is_active.zero?
+      User.update(params[:id], is_active: 1)
+    else
+      User.update(params[:id], is_active: 0)
     end
-    redirect_to controller: 'admin', action: 'show', id: session[:user_id]
+    redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id
   end
 end

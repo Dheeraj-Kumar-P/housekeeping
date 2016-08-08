@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get 'application/logged'
   resources :hotels do
     get 'new', on: :member
-    post 'block', on: :member
+    get 'block', on: :member
   end
   resources :users, only: :create do
     get 'new', on: :member

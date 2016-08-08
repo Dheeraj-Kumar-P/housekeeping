@@ -2,27 +2,34 @@
 <body style='text-align:center'>
 <p style="text-align:right	"><%= link_to "Create User", {:controller =>'users',:action=>'new',:id=>params[:id]}, class: 'btn btn-info'%>&emsp;</p><br>
 &emsp;<h5>&emsp;<b>Staffs</b></h5>
-<%= form_tag(:controller => "hotels",:action =>"block") do %>
-	<table class="table table-bordered" style='width:40%' align='center'>		
-		<tr><th>Name</th><th>Email</th><th>Phone.No</th>
+	<table class="table table-bordered" style='width:60%' align='center'>		
+		<tr><th style='text-align:center'>Name</th><th style='text-align:center'>Email</th><th style='text-align:center'>Phone.No</th>
 		</tr>
 		<%= @staffs.each do |staff|%>
 		<tr>
-			<td>&emsp;<%=staff.name%></td><td><%=staff.email%></td><td><%=staff.phone_no%></td><td><%= check_box(staff.id,value='true', {checked: staff.is_active == 0})%>&emsp;Disable</td>	
+			<td>&emsp;<%=staff.name%></td><td><%=staff.email%></td><td><%=staff.phone_no%></td><td>
+			<% if staff.is_active == 0%>
+				<%= link_to 'Enable', {:controller =>'hotels',:action=>'block',:id=>staff.id},  class: 'btn btn-success'%>
+			<% else%>
+				<%= link_to 'Disable', {:controller =>'hotels',:action=>'block',:id=>staff.id},  class: 'btn btn-danger'%>
+			<%end%></td>
 		</tr>
 		<%end%>
 	</table><br>
 	<h5><b>&emsp;Maids</b></h5>
-	<table class="table table-bordered" style='width:40%' align='center'>
-		<tr><th>Name</th><th>Email</th><th>Phone.No</th>
+	<table class="table table-bordered" style='width:60%' align='center'>
+		<tr><th style='text-align:center'>Name</th><th style='text-align:center'>Email</th><th style='text-align:center'>Phone.No</th>
 		</tr>
 		<%= @maids.each do |maid|%>
 		<tr>
-			<td>&emsp;<%=maid.name%></td><td><%=maid.email%></td><td><%=maid.phone_no%></td><td><%= check_box(maid.id,value='true', {checked: maid.is_active == 0})%>&emsp;Disable</td>	
+			<td>&emsp;<%=maid.name%></td><td><%=maid.email%></td><td><%=maid.phone_no%></td><td>
+			<% if maid.is_active == 0%>
+				<%= link_to 'Enable', {:controller =>'hotels',:action=>'block',:id=>maid.id},  class: 'btn btn-success'%>
+			<% else%>
+				<%= link_to 'Disable', {:controller =>'hotels',:action=>'block',:id=>maid.id},  class: 'btn btn-danger'%>
+			<%end%></td>	
 		</tr>
 		<%end%> 
 	</table><br><br>
-	&emsp;&emsp;&emsp;<%= submit_tag "Submit",class: 'btn btn-primary btn-small'%>
-<% end %><br>
-	&emsp;&emsp;&emsp;&nbsp; <%= link_to "Back", {:controller =>'admin',:action=>'show',:id=>session[:user_id]},  class: 'btn btn-info btn-small'%><br><br><br><br><br><br>
+	<%= link_to "Back", {:controller =>'admin',:action=>'show',:id=>session[:user_id]},  class: 'btn btn-info btn-small'%><br><br><br><br><br><br>
 </body>
