@@ -22,6 +22,12 @@ class MaidController < ApplicationController
     redirect_to :controller=>'staff', :action=>'show',:id=>params[:id]
   end
 
+  def delete
+    @user = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
+    TaskAssignment.find_by(room_id: params[:id], status: 'assigned').destroy
+    redirect_to :controller => 'maid', :action => 'show', :id => @user.user_id
+  end
+
   def cleaning
     @task = TaskAssignment.find_by(room_id: params[:id],status: 'assigned')
     @room = Room.find(params[:id])

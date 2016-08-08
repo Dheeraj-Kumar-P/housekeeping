@@ -4,20 +4,22 @@
 	<table class="table table-bordered">
 		
 		<%= @maids.each do |maid|%>
-			<tr><td>&emsp;&emsp;<%= radio_button(:users,:id,maid.id) %>&emsp;<%=maid.name%></td></tr>	
+			<tr><td>&emsp;&emsp;<%= radio_button(:users,:id,maid.id) %>&emsp;<%= link_to maid.name, {:controller =>'maid',:action=>'show',:id =>maid.id}%></td></tr>	
 		<%end%>
 	</table>
 	<% if @maids.first.nil?%>
 			<br>&emsp;No maids present at this shift<br>
 	<% end %><br>
+	<% if @rooms.first.nil?%>
+		<br>&emsp;All rooms are assigned<br>
+	<%else%>
 	<th><b>&emsp;Rooms</th>
 	<table class="table table-bordered">
 		<%= @rooms.each do |room|%>
 			<tr><tr><td>&emsp;&emsp;<%= check_box_tag(room.no,room.id)%>&emsp;<%= room.no %></td></tr></tr>	
 		<%end%>
 	</table>
-	<% if @rooms.first.nil?%>
-		<br>&emsp;All rooms are assigned<br>
+	
 	<% end %><br><br>
 	&emsp;&emsp;&emsp;<%= submit_tag 'Assign', class: "btn btn-primary"%>
 <%end%>

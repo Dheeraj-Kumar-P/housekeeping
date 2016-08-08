@@ -27,7 +27,4 @@ class StaffController < ApplicationController
     end
     @rooms=Room.where(status: 'dirty', hotel_id: @staff.hotel_id, id: room).find_each
   end
-
-  def maid
-  end
 end
