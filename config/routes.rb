@@ -18,10 +18,13 @@ Rails.application.routes.draw do
     post 'update', on: :member
   end
   resources :admin, only: 'show'
-  resources :staff, only: [:show]
-  resources :maid, only: [:show] do
+  resources :staff, only: [:show, :edit] do
+    post 'update', on: :member
+  end
+  resources :maid, only: [:show, :edit] do
     get 'delete', on: :member
     get 'cleaning', on: :member
+    post 'update', on: :member
     post 'start', on: :member
     post 'stop', on: :member
     post 'task', on: :member

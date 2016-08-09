@@ -34,7 +34,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @shifts = Shift.find_each
     @user = User.find(params[:id])
   end
 
@@ -57,7 +56,6 @@ class UsersController < ApplicationController
       email: params[:users][:email],
       phone_no: params[:users][:phone_no],
       image: params[:users][:image] }
-    # params.require(:users).permit(:image, :name, :email, :phone_no)
   end
 
   def create_attrs(params)

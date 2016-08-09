@@ -1,10 +1,14 @@
-
 <body>
-<% if session[:user_id] == params[:id].to_i %>
-	<h1>&emsp;Dash Board</h1><br><br>
-<%else%>
-	<h1>&emsp;<%= User.find(params[:id]).name %></h1><br><br>
-<%end%>
+<table class='table' style='width:40%' align='center'>
+	<tr>
+	<% if session[:user_id] == params[:id].to_i %>
+		<td style="text-align:center"><h1>Dash Board</h1></td>
+	<%else%>
+		<td style="text-align:center"><h1><%= @user.name %></h1></td>
+	<%end%>
+	<td style="width:50%"><%= image_tag @user.image.url(:medium) %></td>
+	</tr>
+</table><br><br>
 <table class="table table-bordered">
 	<tr>
 		<td>&emsp;<b>No. of Rooms to be Cleaned</b></td>

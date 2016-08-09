@@ -1,4 +1,9 @@
-<h1>&emsp;Staff</h1><br>
+<table class='table' style='width:40%' align='center'>
+	<tr>
+	<td style="text-align:center"><h1>Staff</h1></td>
+	<td style="width:50%"><%= image_tag @staff.image.url(:medium) %></td>
+	</tr>
+</table><br>
 <th><b>&emsp;Maids</th>
 <%= form_tag(:controller=>'maid',:action=>'task',:id=>params[:id]) do%>
 	<table class="table table-bordered">

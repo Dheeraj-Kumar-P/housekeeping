@@ -27,4 +27,27 @@ class StaffController < ApplicationController
     end
     @rooms = Room.where(status: 'dirty', hotel_id: @staff.hotel_id, id: room).find_each
   end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    begin
+      User.update(params[:id], update_attrs(params))
+    rescue StandardError => e
+      flash[:notice] = e.message
+      redirect_to action: 'edit', id: params[:id]
+    else
+      redirect_to action: 'show', id: session[:user_id]
+    end
+  end
+
+  def update_attrs(params)
+    { name: params[:users][:name],
+      email: params[:users][:email],
+      phone_no: params[:users][:phone_no],
+      image: params[:users][:image] }
+  end
 end

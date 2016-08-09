@@ -53,7 +53,8 @@ class HotelsController < ApplicationController
   def create_attrs(params)
     { name: params[:hotels][:name],
       no_of_rooms: params[:hotels][:no_of_rooms],
-      address: params[:hotels][:address] }
+      address: params[:hotels][:address],
+      photo: params[:hotels][:photo] }
   end
 
   def room_attrs(iteration)
@@ -65,6 +66,7 @@ class HotelsController < ApplicationController
 
   def update_attrs(params)
     { name: params[:hotels][:name],
-      address: params[:hotels][:address] }
+      address: params[:hotels][:address],
+      photo: params[:hotels][:photo] }
   end
 end

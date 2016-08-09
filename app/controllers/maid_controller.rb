@@ -2,6 +2,7 @@
 class MaidController < ApplicationController
   before_action :authorize
   def show
+    @user = User.find(params[:id])
     @tasks = TaskAssignment.where(task1_attrs(params)).find_each
     room = []
     @tasks.each do |task|
@@ -9,6 +10,22 @@ class MaidController < ApplicationController
     end
     @rooms = Room.where(id: room, status: 'dirty').find_each
     @tasks = TaskAssignment.where(task2_attrs(params)).find_each
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    begin
+      User.update(params[:id], update_attrs(params))
+    rescue StandardError => e
+      flash[:notice] = e.message
+      redirect_to action: 'edit', id: params[:id]
+    else
+      redirect_to action: 'show', id: session[:user_id]
+    end
   end
 
   def task
@@ -74,6 +91,13 @@ class MaidController < ApplicationController
       room_id: room.id,
       task_id: Task.first.id,
       status: 'assigned' }
+  end
+
+  def update_attrs(params)
+    { name: params[:users][:name],
+      email: params[:users][:email],
+      phone_no: params[:users][:phone_no],
+      image: params[:users][:image] }
   end
 
   def stop_attrs

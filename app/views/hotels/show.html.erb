@@ -1,11 +1,14 @@
 <% if flash[:notice] %>
 	<%= flash[:notice]%><br/>
 <% end %>
-<h1><%=@hotel.name%></h1></td>
+<table class='table' style='width:50%' align='center'>
+	<td><h1><%=@hotel.name%></h1></td>
+	<td><h1><%= image_tag @hotel.photo.url(:medium) %></h1></td>
+</table>
 <body style='text-align:center'>
 <p style="text-align:right	">
-	<%= link_to "Edit", {:controller =>'hotels',:action=>'edit',:id=>params[:id]}, class: 'btn btn-info'%>&emsp;
-	<%= link_to "Create User", {:controller =>'users',:action=>'new',:id=>params[:id]}, class: 'btn btn-info'%>&emsp;</p><br>
+	<%= link_to "Edit", {:controller =>'hotels',:action=>'edit',:id=>params[:id]}%>&emsp;
+	<%= link_to "Create User", {:controller =>'users',:action=>'new',:id=>params[:id]}%>&emsp;</p><br>
 
 	<% if @staffs.first !=nil %>
 		<h5><b>Staffs</b></h5>
