@@ -9,6 +9,7 @@
 	<tr><td><b>Confirm Password </td><td style='text-align:right'>: <%= password_field(:password,:password)%></tr></td>
 	<tr><td><b>Email </td><td style='text-align:right'>: <%= email_field(:users, :email)%></tr></td>
 	<tr><td><b>Phone no </td><td style='text-align:right'>: <%= number_field(:users, :phone_no)%></tr></td>
+	<tr><td><b>Profile </td><td style='text-align:right'> <%= file_field(:users, :image)%></tr></td>
 	</table><br>
 	<b><p style='text-align:center'>Role : <%= radio_button(:roles, :id,Role.find_by(name:"Staff").id)%>&nbsp;Staff&emsp;<%=radio_button(:roles,:id,Role.find_by(name:"Maid").id)%>&nbsp;Maid<br><br>	
 	Shift :
@@ -20,4 +21,3 @@
 	<%= submit_tag "Create", class: 'btn btn-primary'%>
 <% end %></p><br>
 <p style='text-align:center'><%=link_to 'Back', {:controller =>'hotels',:action=>'show',:id =>params[:id]}, class: 'btn btn-info' %></p>
-

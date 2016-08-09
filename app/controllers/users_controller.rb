@@ -38,8 +38,14 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    User.update(params[:id], update_attrs(params))
-    redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id
+    begin
+      User.update(params[:id], update_attrs(params))
+    rescue Exception => e
+      flash[:notice] = e.message
+      redirect_to action: 'edit', id: params[:id]
+    else
+      redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id
+    end
   end
 
   private
@@ -48,6 +54,7 @@ class UsersController < ApplicationController
     { name: params[:users][:name],
       email: params[:users][:email],
       phone_no: params[:users][:phone_no] }
+    params.require(:users).permit(:image)
   end
 
   def create_attrs(params)
@@ -60,5 +67,6 @@ class UsersController < ApplicationController
       hotel_id: params[:id],
       role_id: params[:roles][:id],
       shift_id: params[:shift][:id] }
+    params.require(:users).permit(:image)
   end
 end

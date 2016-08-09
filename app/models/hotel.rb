@@ -8,4 +8,5 @@ class Hotel < ApplicationRecord
   validates :no_of_maid, presence: { strict: true }
   has_many :rooms
   has_many :users
+  # has_attached_file :image
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801121500) do
+ActiveRecord::Schema.define(version: 20160808132923) do
 
   create_table "clients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "provider"
@@ -24,12 +24,15 @@ ActiveRecord::Schema.define(version: 20160801121500) do
   end
 
   create_table "hotels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.string   "name"
     t.integer  "no_of_rooms"
-    t.integer  "no_of_staff"
-    t.integer  "no_of_maid"
+    t.string   "address"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "oauth_access_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -129,16 +132,20 @@ ActiveRecord::Schema.define(version: 20160801121500) do
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.string   "name"
     t.string   "password"
     t.string   "email"
     t.string   "phone_no"
-    t.integer  "is_active",  limit: 1
+    t.integer  "is_active",          limit: 1
     t.integer  "shift_id"
     t.integer  "hotel_id"
     t.integer  "role_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
