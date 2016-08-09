@@ -15,7 +15,7 @@ class StaffController < ApplicationController
         @time = shift.id
       end
     end
-		@maids=User.where(hotel_id: @staff.hotel_id, shift_id: @time, role_id: Role.find_by(name: 'Maid').id).find_each
+		@maids = User.where(hotel_id: @staff.hotel_id, shift_id: @time, role_id: Role.maid).find_each
     @tasks = TaskAssignment.where(status: 'assigned').find_each
     @rooms1 = Room.where(hotel_id: @staff.hotel_id).find_each
     room = []
@@ -25,6 +25,6 @@ class StaffController < ApplicationController
     @tasks.each do |task|
       room.delete(task.room_id)
     end
-    @rooms=Room.where(status: 'dirty', hotel_id: @staff.hotel_id, id: room).find_each
+    @rooms = Room.where(status: 'dirty', hotel_id: @staff.hotel_id, id: room).find_each
   end
 end

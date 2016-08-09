@@ -3,21 +3,23 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper_method :current_user
   def authorize
-    if(session[:user_id] == nil)
-  		redirect_to :controller=>'login',:action=>'new'
+    if session[:user_id].nil?
+      redirect_to controller: 'login', action: 'new'
     end
   end
 
+  config.paperclip_defaults = { storage: :fog, fog_credentials: { provider: "Local", local_root: "#{Rails.root}/public"}, fog_directory: "", fog_host: "localhost"}
+
   def logged
-    if(session[:user_id] != nil)
-      user=User.find_by(id:session[:user_id])
-      if (user!=nil)
-        if(user.role_id==Role.find_by(name:"Admin").id)
-          redirect_to :controller=>'admin', :action=>'show' ,:id=>user.id
-        elsif (user.role_id==Role.find_by(name:"Staff").id)
-          redirect_to :controller=>'staff', :action=>'show',:id=>user.id
-        elsif (user.role_id==Role.find_by(name:"Maid").id)
-          redirect_to :controller=>'maid', :action=>'show',:id=>user.id 
+    unless session[:user_id].nil?
+      user = User.find_by(id: session[:user_id])
+      unless user.nil?
+        if user.role_id == Role.admin
+          redirect_to controller: 'admin', action: 'show', id: user.id
+        elsif user.role_id == Role.staff
+          redirect_to controller: 'staff', action: 'show', id: user.id
+        elsif user.role_id == Role.maid
+          redirect_to controller: 'maid', action: 'show', id: user.id
         end
       end
     end

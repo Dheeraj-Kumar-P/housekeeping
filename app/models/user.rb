@@ -7,8 +7,12 @@ class User < ApplicationRecord
 
   validates :phone_no, presence: { strict: true }
   has_attached_file :image,
-                    styles: { medium: '300x300>', thumb: '100x100>' },
+                    styles: { large: '600x600>',
+                              medium: '300x300>',
+                              thumb: '100x100#' },
+                    keep_old_files: true,
                     default_url: '/images/:style/missing.png'
+  validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
   belongs_to :hotel, foreign_key: 'hotel_id'
   belongs_to :role, foreign_key: 'role_id'
   belongs_to :shift, foreign_key: 'shift_id'

@@ -3,16 +3,18 @@
 <% end %>
 <h1><%=@hotel.name%></h1></td>
 <body style='text-align:center'>
-<p style="text-align:right	"><%= link_to "Create User", {:controller =>'users',:action=>'new',:id=>params[:id]}, class: 'btn btn-info'%>&emsp;</p><br>
+<p style="text-align:right	">
+	<%= link_to "Edit", {:controller =>'hotels',:action=>'edit',:id=>params[:id]}, class: 'btn btn-info'%>&emsp;
+	<%= link_to "Create User", {:controller =>'users',:action=>'new',:id=>params[:id]}, class: 'btn btn-info'%>&emsp;</p><br>
 
 	<% if @staffs.first !=nil %>
 		<h5><b>Staffs</b></h5>
 		<table class="table table-bordered" style='width:60%' align='center'>		
-			<tr><th style='text-align:center'>Name</th><th style='text-align:center'>Email</th><th style='text-align:center'>Phone.No</th>
+			<tr><th style='text-align:center'>Profile</th><th style='text-align:center'>Name</th><th style='text-align:center'>Email</th><th style='text-align:center'>Phone.No</th>
 			</tr>
 			<%= @staffs.each do |staff|%>
 			<tr>
-				<td>&emsp;<%=staff.name%></td><td><%=staff.email%></td><td><%=staff.phone_no%></td><td style='width:15%'>
+				<td>&emsp;<%= image_tag staff.image.url(:thumb) %></td><td>&emsp;<%=staff.name%></td><td><%=staff.email%></td><td><%=staff.phone_no%></td><td style='width:15%'>
 				<% if staff.is_active == 0%>
 					<%= link_to 'Enable', {:controller =>'hotels',:action=>'block',:id=>staff.id},  class: 'btn btn-success'%>
 				<% else%>
@@ -30,11 +32,11 @@
 	<% if @maids.first !=nil %>
 		<h5><b>Maids</b></h5>
 		<table class="table table-bordered" style='width:60%' align='center'>
-			<tr><th style='text-align:center'>Name</th><th style='text-align:center'>Email</th><th style='text-align:center'>Phone.No</th>
+			<tr><th style='text-align:center'>Profile</th><th style='text-align:center'>Name</th><th style='text-align:center'>Email</th><th style='text-align:center'>Phone.No</th>
 			</tr>
 			<%= @maids.each do |maid|%>
 			<tr>
-				<td>&emsp;<%=maid.name%></td><td><%=maid.email%></td><td><%=maid.phone_no%></td><td style='width:15%'>
+				<td>&emsp;<%= image_tag maid.image.url(:thumb) %></td><td>&emsp;<%=maid.name%></td><td><%=maid.email%></td><td><%=maid.phone_no%></td><td style='width:15%'>
 				<% if maid.is_active == 0%>
 					<%= link_to 'Enable', {:controller =>'hotels',:action=>'block',:id=>maid.id},  class: 'btn btn-success'%>
 				<% else%>

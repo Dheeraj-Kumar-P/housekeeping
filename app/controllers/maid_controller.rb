@@ -2,13 +2,13 @@
 class MaidController < ApplicationController
   before_action :authorize
   def show
-    @tasks = TaskAssignment.where(user_id: params[:id], status: 'assigned').find_each
+    @tasks = TaskAssignment.where(task1_attrs(params)).find_each
     room = []
     @tasks.each do |task|
       room.push(task.room_id)
     end
     @rooms = Room.where(id: room, status: 'dirty').find_each
-    @tasks = TaskAssignment.where(user_id: params[:id],status: 'done',date: Date.today).find_each
+    @tasks = TaskAssignment.where(task2_attrs(params)).find_each
   end
 
   def task
@@ -16,33 +16,33 @@ class MaidController < ApplicationController
     @rooms = Room.where(status: 'dirty', hotel_id: hotel_id).find_each
     @rooms.each do |room|
       unless params[room.no.to_s].nil?
-        TaskAssignment.create(:user_id=>params[:users][:id],:room_id=> room.id,:task_id=>Task.first.id,:status=>"assigned")
+        TaskAssignment.create(create_attrs(params, room))
       end
     end
-    redirect_to :controller=>'staff', :action=>'show',:id=>params[:id]
+    redirect_to controller: 'staff', action: 'show', id: params[:id]
   end
 
   def delete
     @user = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
     TaskAssignment.find_by(room_id: params[:id], status: 'assigned').destroy
-    redirect_to :controller => 'maid', :action => 'show', :id => @user.user_id
+    redirect_to controller: 'maid', action: 'show', id: @user.user_id
   end
 
   def cleaning
-    @task = TaskAssignment.find_by(room_id: params[:id],status: 'assigned')
+    @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
     @room = Room.find(params[:id])
   end
 
   def start
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
-    TaskAssignment.update(@task.id, :start_time => Time.now)
-    redirect_to :controller => 'maid', :action => 'show', :id => @task.user_id
+    TaskAssignment.update(@task.id, start_time: Time.now)
+    redirect_to controller: 'maid', action: 'show', id: @task.user_id
   end
 
   def stop
     require 'date'
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
-    TaskAssignment.update(@task.id, :stop_time=>Time.now, :status => 'done', :date => Date.today)
+    TaskAssignment.update(@task.id, stop_attrs)
     @salary = Salary.find_by(user_id: @task.user_id)
     @task = TaskAssignment.find(@task.id)
     time = @task.stop_time - @task.start_time
@@ -64,8 +64,32 @@ class MaidController < ApplicationController
       sec = sec % 60
     end
     time = Time.gm(2000, 1, 1, hour, min, sec)
-    Salary.update(@salary.id, :total_hours => time, :date => day)
-    Room.update(@task.room_id, :status=>'clean')
-    redirect_to :controller => 'maid', :action => 'show', :id => @task.user_id
+    Salary.update(@salary.id, total_hours: time, date: day)
+    Room.update(@task.room_id, status: 'clean')
+    redirect_to controller: 'maid', action: 'show', id: @task.user_id
+  end
+
+  def create_attrs(params, room)
+    { user_id: params[:users][:id],
+      room_id: room.id,
+      task_id: Task.first.id,
+      status: 'assigned' }
+  end
+
+  def stop_attrs
+    { stop_time: Time.now,
+      date: Date.today,
+      status: 'done' }
+  end
+
+  def task1_attrs(params)
+    { user_id: params[:id],
+      status: 'assigned' }
+  end
+
+  def task2_attrs(params)
+    { user_id: params[:id],
+      status: 'done',
+      date: Date.today }
   end
 end

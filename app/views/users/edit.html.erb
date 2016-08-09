@@ -2,12 +2,12 @@
 	<%= flash[:notice]%><br/>
 <% end %>
 <h2 style='text-align:center'>Update</h2><br>
-<%= form_tag(:controller => "users", :action => "update",:id=>params[:id]) do %> 
+<%= form_tag({:controller => "users", :action => "update", :id=>params[:id]}, { :multipart => true }) do %> 
 	<table class='table' style='width:40%' align='center'>
 	<tr><td><b>Name </td><td style='text-align:right'>: <%= text_field(:users,:name,value: @user.name) %></tr></td>
 	<tr><td><b>Email </td><td style='text-align:right'>: <%= email_field(:users, :email, value: @user.email)%></tr></td>
 	<tr><td><b>Phone no </td><td style='text-align:right'>: <%= number_field(:users, :phone_no, value: @user.phone_no)%></tr></td>
-	<tr><td><b>Profile </td><td style='text-align:right'> <%= file_field(:users, :image)%></tr></td>
+	<tr><td><b>Profile </td><td style='text-align:right'> <%= file_field(:users, :image, value: @user.image)%></tr></td>
 	</table><br>
 	<br>
 	<p style='text-align:center'>

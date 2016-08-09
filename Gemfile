@@ -50,3 +50,4 @@ gem 'rubocop', '~> 0.42.0', require: false
 gem 'twitter-bootstrap-rails'
 gem 'capistrano'
 gem 'paperclip'
+gem 'rmagick'

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :hotels do
     get 'new', on: :member
     get 'block', on: :member
+    post 'update', on: :member
   end
   resources :users, only: [:create, :edit] do
     get 'new', on: :member

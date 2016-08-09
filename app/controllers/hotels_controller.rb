@@ -7,15 +7,30 @@ class HotelsController < ApplicationController
   def create
     begin
       Hotel.create(create_attrs(params))
-    rescue Exception => e
+    rescue StandardError => e
       flash[:notice] = e.message
       redirect_to action: 'new'
     else
       for iteration in 101..((params[:hotels][:no_of_rooms].to_i) + 100)
-        Room.create(no: iteration, hotel_id: Hotel.last.id, estimated_time:'01:00:00', status: 'dirty')
+        Room.create(room_attrs(iteration))
       end
       flash[:notice] = 'Hotel created!'
       redirect_to controller: 'admin', action: 'show', id: session[:user_id]
+    end
+  end
+
+  def edit
+    @hotel = Hotel.find(params[:id])
+  end
+
+  def update
+    begin
+      Hotel.update(params[:id], update_attrs(params))
+    rescue StandardError => e
+      flash[:notice] = e.message
+      redirect_to action: 'edit'
+    else
+      redirect_to action: 'show', id: params[:id]
     end
   end
 
@@ -32,13 +47,24 @@ class HotelsController < ApplicationController
     else
       User.update(params[:id], is_active: 0)
     end
-    redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id
+    redirect_to action: 'show', id: @user.hotel_id
   end
 
   def create_attrs(params)
     { name: params[:hotels][:name],
       no_of_rooms: params[:hotels][:no_of_rooms],
-      no_of_staff: params[:hotels][:no_of_staff],
-      no_of_maid: params[:hotels][:no_of_maid] }
+      address: params[:hotels][:address] }
+  end
+
+  def room_attrs(iteration)
+    { no: iteration,
+      hotel_id: Hotel.last.id,
+      estimated_time: '01:00:00',
+      status: 'dirty' }
+  end
+
+  def update_attrs(params)
+    { name: params[:hotels][:name],
+      address: params[:hotels][:address] }
   end
 end

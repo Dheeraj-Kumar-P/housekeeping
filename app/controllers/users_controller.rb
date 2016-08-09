@@ -1,6 +1,8 @@
 # User controller
 class UsersController < ApplicationController
   before_action :authorize
+  require 'rmagick'
+  include Magick
 
   def new
     @shifts = Shift.find_each
@@ -14,11 +16,11 @@ class UsersController < ApplicationController
     else
       begin
         User.create(create_attrs(params))
-      rescue Exception => e
+      rescue StandardError => e
         if params[:roles].nil?
-          flash[:notice] = 'Role must be specified'
+          flash[:notice] = 'Role must be specified!!'
         elsif params[:shift].nil?
-          flash[:notice] = 'Shift must be specified'
+          flash[:notice] = 'Shift must be specified!!'
         else
           flash[:notice] = e.message
         end
@@ -40,7 +42,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     begin
       User.update(params[:id], update_attrs(params))
-    rescue Exception => e
+    rescue StandardError => e
       flash[:notice] = e.message
       redirect_to action: 'edit', id: params[:id]
     else
@@ -53,8 +55,9 @@ class UsersController < ApplicationController
   def update_attrs(params)
     { name: params[:users][:name],
       email: params[:users][:email],
-      phone_no: params[:users][:phone_no] }
-    params.require(:users).permit(:image)
+      phone_no: params[:users][:phone_no],
+      image: params[:users][:image] }
+    # params.require(:users).permit(:image, :name, :email, :phone_no)
   end
 
   def create_attrs(params)
@@ -66,7 +69,7 @@ class UsersController < ApplicationController
       is_active: 1,
       hotel_id: params[:id],
       role_id: params[:roles][:id],
-      shift_id: params[:shift][:id] }
-    params.require(:users).permit(:image)
+      shift_id: params[:shift][:id],
+      image: params[:users][:image] }
   end
 end

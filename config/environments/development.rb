@@ -26,6 +26,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  Paperclip.options[:command_path] = '/usr/bin/convert'
+
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
@@ -52,12 +54,10 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-     address:              'smtp.gmail.com',
-     port:                 587,
-     user_name:            'dk1563@gmail.com',
-     password:             'PASSWORDDK',
-     authentication:       'plain',
-     enable_starttls_auto: true  
-  }
+  config.action_mailer.smtp_settings = { address: 'smtp.gmail.com',
+                                         port: 587,
+                                         user_name: 'dk1563@gmail.com',
+                                         password:             'PASSWORDDK',
+                                         authentication:       'plain',
+                                         enable_starttls_auto: true }
 end
