@@ -19,6 +19,21 @@ function checkTime(i) {
 </script>
 
 <html>
+<div align='center'>
+  <% if flash[:notice] %>
+    <%= flash[:notice]%><br/>
+  <% end %>
+</div>
+<div style='color:green' align='center'>
+  <% if flash[:success] %>
+    <%= flash[:success]%><br/>
+  <% end %>
+</div>
+<div style='color:red' align='center'>
+  <% if flash[:error] %>
+    <%= flash[:error]%><br/>
+  <% end %>
+</div>
   <head>
     <title>Housekeeping</title>
     <%= csrf_meta_tags %>
@@ -31,14 +46,12 @@ function checkTime(i) {
     <% if(session[:user_id])%>
     <div id="time" style="text-align:right;color:gray;">&emsp;</div><br>
   	<div align="right">
-    <%if session[:user_id] == Role.maid || session[:user_id] == Role.staff%>
       <% user = User.find_by(id: session[:user_id])%>
       <% if user.role_id == Role.maid %>
         <%= link_to "Edit Profile", controller: 'maid', action: 'edit', id: session[:user_id]%>&emsp;
       <% elsif user.role_id == Role.staff %>
         <%= link_to "Edit Profile", controller: 'staff', action: 'edit', id: session[:user_id]%>&emsp;
       <%end%>
-    <%end%>
     <%= link_to "Home", controller: 'application', action: 'logged'%>&emsp;
     <%= link_to "Sign out", signout_path, id: "sign_out" %>&emsp;</div>
     <%end%>

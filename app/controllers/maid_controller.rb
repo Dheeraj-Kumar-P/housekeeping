@@ -2,6 +2,7 @@
 class MaidController < ApplicationController
   before_action :authorize
   def show
+    check_admin
     @user = User.find(params[:id])
     @tasks = TaskAssignment.where(task1_attrs(params)).find_each
     room = []
@@ -13,50 +14,63 @@ class MaidController < ApplicationController
   end
 
   def edit
+    check
     @user = User.find(params[:id])
   end
 
   def update
+    check
     @user = User.find(params[:id])
     begin
       User.update(params[:id], update_attrs(params))
     rescue StandardError => e
-      flash[:notice] = e.message
+      flash[:error] = e.message
       redirect_to action: 'edit', id: params[:id]
     else
+      flash[:success] = 'Successfully updated!!'
       redirect_to action: 'show', id: session[:user_id]
     end
   end
 
   def task
+    check_admin
+    check_maid
     hotel_id = User.find(params[:id]).hotel_id
     @rooms = Room.where(status: 'dirty', hotel_id: hotel_id).find_each
     @rooms.each do |room|
       unless params[room.no.to_s].nil?
         TaskAssignment.create(create_attrs(params, room))
+        flash[:success] = 'Task assigned!!'
       end
     end
     redirect_to controller: 'staff', action: 'show', id: params[:id]
   end
 
   def delete
+    check_maid
+    check_admin
     @user = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
     TaskAssignment.find_by(room_id: params[:id], status: 'assigned').destroy
+    flash[:error] = 'Task deleted!!'
     redirect_to controller: 'maid', action: 'show', id: @user.user_id
   end
 
   def cleaning
+    check
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
     @room = Room.find(params[:id])
   end
 
   def start
+    check
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
     TaskAssignment.update(@task.id, start_time: Time.now)
+    flash[:success] = "Task started at #{Time.now.hour}:#{Time.now.min}"
     redirect_to controller: 'maid', action: 'show', id: @task.user_id
   end
 
   def stop
+    check
     require 'date'
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
     TaskAssignment.update(@task.id, stop_attrs)
@@ -83,8 +97,11 @@ class MaidController < ApplicationController
     time = Time.gm(2000, 1, 1, hour, min, sec)
     Salary.update(@salary.id, total_hours: time, date: day)
     Room.update(@task.room_id, status: 'clean')
+    flash[:success] = 'Task Completed'
     redirect_to controller: 'maid', action: 'show', id: @task.user_id
   end
+
+  private
 
   def create_attrs(params, room)
     { user_id: params[:users][:id],
@@ -94,10 +111,16 @@ class MaidController < ApplicationController
   end
 
   def update_attrs(params)
-    { name: params[:users][:name],
-      email: params[:users][:email],
-      phone_no: params[:users][:phone_no],
-      image: params[:users][:image] }
+    if params[:users][:image].nil?
+      { name: params[:users][:name],
+        email: params[:users][:email],
+        phone_no: params[:users][:phone_no] }
+    else
+      { name: params[:users][:name],
+        email: params[:users][:email],
+        phone_no: params[:users][:phone_no],
+        image: params[:users][:image] }
+    end
   end
 
   def stop_attrs
@@ -115,5 +138,18 @@ class MaidController < ApplicationController
     { user_id: params[:id],
       status: 'done',
       date: Date.today }
+  end
+
+  def check
+    authorize! :read, Salary
+    authorize! :manage, TaskAssignment
+  end
+
+  def check_admin
+    authorize! :read, TaskAssignment
+  end
+
+  def check_maid
+    authorize! :read, Shift
   end
 end

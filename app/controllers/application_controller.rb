@@ -2,13 +2,17 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper_method :current_user
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:error] = exception.message
+    redirect_to root_url, alert: exception.message
+  end
+
   def authorize
-    if session[:user_id].nil?
+    if session[:user_id].nil? 
+      flash[:error] = 'Access Denied'
       redirect_to controller: 'login', action: 'new'
     end
   end
-
-  config.paperclip_defaults = { storage: :fog, fog_credentials: { provider: "Local", local_root: "#{Rails.root}/public"}, fog_directory: "", fog_host: "localhost"}
 
   def logged
     unless session[:user_id].nil?

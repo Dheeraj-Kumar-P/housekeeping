@@ -1,7 +1,4 @@
 <body style="text-align:center">
-<% if flash[:notice] %>
-	<%= flash[:notice]%><br/>
-<% end %>
 <h2>&emsp;Create Hotel</h2><br>
 <%= form_tag({:controller => "hotels", :action => "create"}, { :multipart => true } ) do %> 
 	<table class='table' style='width:30%' align="center">

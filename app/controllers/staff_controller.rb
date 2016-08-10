@@ -1,8 +1,8 @@
 # StaffController
 class StaffController < ApplicationController
   before_action :authorize
-
   def show
+    check
     @staff = User.find(params[:id])
     @shift_all = Shift.find_each
     @shift_all.each do |shift|
@@ -29,25 +29,40 @@ class StaffController < ApplicationController
   end
 
   def edit
+    check
     @user = User.find(params[:id])
   end
 
   def update
+    check
     @user = User.find(params[:id])
     begin
       User.update(params[:id], update_attrs(params))
     rescue StandardError => e
-      flash[:notice] = e.message
+      flash[:error] = e.message
       redirect_to action: 'edit', id: params[:id]
     else
+      flash[:success] = 'Successfully updated!!'
       redirect_to action: 'show', id: session[:user_id]
     end
   end
 
+  private
+
   def update_attrs(params)
-    { name: params[:users][:name],
-      email: params[:users][:email],
-      phone_no: params[:users][:phone_no],
-      image: params[:users][:image] }
+    if params[:users][:image].nil?
+      { name: params[:users][:name],
+        email: params[:users][:email],
+        phone_no: params[:users][:phone_no] }
+    else
+      { name: params[:users][:name],
+        email: params[:users][:email],
+        phone_no: params[:users][:phone_no],
+        image: params[:users][:image] }
+    end
+  end
+
+  def check
+    authorize! :read, Shift
   end
 end
