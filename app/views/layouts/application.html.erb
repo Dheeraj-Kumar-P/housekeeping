@@ -31,11 +31,13 @@ function checkTime(i) {
     <% if(session[:user_id])%>
     <div id="time" style="text-align:right;color:gray;">&emsp;</div><br>
   	<div align="right">
-    <% user = User.find(session[:user_id])%>
-    <% if user.role_id == Role.maid %>
-      <%= link_to "Edit Profile", controller: 'maid', action: 'edit', id: session[:user_id]%>&emsp;
-    <% elsif user.role_id == Role.staff %>
-      <%= link_to "Edit Profile", controller: 'staff', action: 'edit', id: session[:user_id]%>&emsp;
+    <%if session[:user_id] == Role.maid || session[:user_id] == Role.staff%>
+      <% user = User.find_by(id: session[:user_id])%>
+      <% if user.role_id == Role.maid %>
+        <%= link_to "Edit Profile", controller: 'maid', action: 'edit', id: session[:user_id]%>&emsp;
+      <% elsif user.role_id == Role.staff %>
+        <%= link_to "Edit Profile", controller: 'staff', action: 'edit', id: session[:user_id]%>&emsp;
+      <%end%>
     <%end%>
     <%= link_to "Home", controller: 'application', action: 'logged'%>&emsp;
     <%= link_to "Sign out", signout_path, id: "sign_out" %>&emsp;</div>

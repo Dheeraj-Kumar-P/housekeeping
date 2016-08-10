@@ -1,8 +1,7 @@
 # Sessions
 class SessionsController < ApplicationController
   def create
-    user = Client.from_omniauth(env['omniauth.auth'])
-    session[:user_id] = user.id
+    Client.from_omniauth(env['omniauth.auth'])
     redirect_to controller: 'login', action: 'ath'
   end
 
