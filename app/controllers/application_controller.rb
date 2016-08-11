@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    if session[:user_id].nil? 
+    if session[:user_id].nil?
       flash[:error] = 'Access Denied'
       redirect_to controller: 'login', action: 'new'
     end
@@ -37,14 +37,14 @@ class ApplicationController < ActionController::Base
   # scheduler.in '1s' do
   #   UserNotifierMailer.shift_email.deliver_now!
   # end
-  scheduler.cron '0 00 * * 1-5' do
-    scheduler.in '8h' do
-      UserNotifierMailer.shift_email.deliver_now!
-    end
-    scheduler.in '16h' do
-      UserNotifierMailer.shift_email.deliver_now!
-    end
-    scheduler.in '23h59m' do
+
+  scheduler.in '1s' do
+    @shift_time = Shift.current_id
+  end
+
+  scheduler.every '10s' do
+    if @shift_time != Shift.current_id
+      @shift_time = Shift.current_id
       UserNotifierMailer.shift_email.deliver_now!
     end
   end

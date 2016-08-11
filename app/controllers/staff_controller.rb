@@ -4,18 +4,7 @@ class StaffController < ApplicationController
   def show
     check
     @staff = User.find(params[:id])
-    @shift_all = Shift.find_each
-    @shift_all.each do |shift|
-      if shift.end_time.hour == 0
-        end_hour = 24
-      else
-        end_hour = shift.end_time.hour
-      end
-      if shift.start_time.hour <= Time.now.hour && Time.now.hour < end_hour
-        @time = shift.id
-      end
-    end
-		@maids = User.where(hotel_id: @staff.hotel_id, shift_id: @time, role_id: Role.maid).find_each
+		@maids = User.where(hotel_id: @staff.hotel_id, shift_id: Shift.current_id, role_id: Role.maid).find_each
     @tasks = TaskAssignment.where(status: 'assigned').find_each
     @rooms1 = Room.where(hotel_id: @staff.hotel_id).find_each
     room = []
