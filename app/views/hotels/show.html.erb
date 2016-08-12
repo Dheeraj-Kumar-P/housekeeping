@@ -12,18 +12,17 @@
 		<table class="table table-bordered" style='width:60%' align='center'>		
 			<tr><th style='text-align:center'>Profile</th><th style='text-align:center'>Name</th><th style='text-align:center'>Email</th><th style='text-align:center'>Phone.No</th>
 			</tr>
-			<%= @staffs.each do |staff|%>
+		<% @staffs = User.where(hotel_id: params[:id], role_id: Role.staff).find_each %>
+		<% @staffs.each do |staff|%>
 			<tr>
-				<td>&emsp;<%= image_tag staff.image.url(:thumb) %></td><td>&emsp;<%=staff.name%></td><td><%=staff.email%></td><td><%=staff.phone_no%></td><td style='width:15%'>
-				<% if staff.is_active == 0%>
-					<%= link_to 'Enable', {:controller =>'hotels',:action=>'block',:id=>staff.id},  class: 'btn btn-success'%>
-				<% else%>
-					<%= link_to 'Disable', {:controller =>'hotels',:action=>'block',:id=>staff.id},  class: 'btn btn-danger'%>
-				<%end%></td>
+				<td>&emsp;<%= image_tag staff.image.url(:thumb) %></td><td>&emsp;<%=staff.name%></td><td><%=staff.email%></td><td><%=staff.phone_no%></td>
+				<td style='width:15%;' id="<%= staff.id%>">
+						<%= render partial: 'button', locals: { user: staff} %>
+		    </td>
 				<td style='width:10%'><%= link_to 'Edit', {:controller =>'users',:action=>'edit',:id=>staff.id},  class: 'btn btn-info'%>
 				</td>
 			</tr>
-			<%end%>
+		<%end%>
 		</table>
 	<%else%>
 		No staffs available<br>
@@ -36,12 +35,10 @@
 			</tr>
 			<%= @maids.each do |maid|%>
 			<tr>
-				<td>&emsp;<%= image_tag maid.image.url(:thumb) %></td><td>&emsp;<%=maid.name%></td><td><%=maid.email%></td><td><%=maid.phone_no%></td><td style='width:15%'>
-				<% if maid.is_active == 0%>
-					<%= link_to 'Enable', {:controller =>'hotels',:action=>'block',:id=>maid.id},  class: 'btn btn-success'%>
-				<% else%>
-					<%= link_to 'Disable', {:controller =>'hotels',:action=>'block',:id=>maid.id},  class: 'btn btn-danger'%>
-				<%end%></td>	
+				<td>&emsp;<%= image_tag maid.image.url(:thumb) %></td><td>&emsp;<%=maid.name%></td><td><%=maid.email%></td><td><%=maid.phone_no%></td>
+				<td style='width:15%' id="<%= maid.id%>">
+					<%= render partial: 'button', locals: { user: maid} %>
+				</td>	
 				<td style='width:10%'><%= link_to 'Edit', {:controller =>'users',:action=>'edit',:id=>maid.id},  class: 'btn btn-info'%>
 				</td>
 			</tr>

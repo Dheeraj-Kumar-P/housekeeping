@@ -13,4 +13,7 @@ class Shift < ApplicationRecord
     end
   end
   scope :current_id, -> { @time }
+  scope :morning, -> { find_by(name: 'morning').end_time }
+  scope :evening, -> { find_by(name: 'evening').end_time }
+  scope :night, -> { find_by(name: 'night').end_time }
 end

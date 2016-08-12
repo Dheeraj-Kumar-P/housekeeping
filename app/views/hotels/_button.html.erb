@@ -1,0 +1,5 @@
+<% if user.is_active == 0%>
+	<%= link_to 'Enable', block_hotel_path(user), remote: true, class: 'btn btn-success'%>
+<% else%>
+	<%= link_to 'Disable', block_hotel_path(user), remote: true, class: 'btn btn-danger'%>
+<%end%>

@@ -38,14 +38,21 @@ class ApplicationController < ActionController::Base
   #   UserNotifierMailer.shift_email.deliver_now!
   # end
 
-  scheduler.in '1s' do
-    @shift_time = Shift.current_id
-  end
+  # scheduler.in '1s' do
+  #   Shift.morning
+  # end
+  @a = 11
 
-  scheduler.every '10s' do
-    if @shift_time != Shift.current_id
-      @shift_time = Shift.current_id
-      UserNotifierMailer.shift_email.deliver_now!
-    end
+  scheduler.cron "0 #{@a} * * 1-7" do
+    UserNotifierMailer.shift_email.deliver_now!
+  end
+  scheduler.cron "0 #{Shift.morning.hour} * * 1-7" do
+    UserNotifierMailer.shift_email.deliver_now!
+  end
+  scheduler.cron "0 #{Shift.evening.hour} * * 1-7" do
+    UserNotifierMailer.shift_email.deliver_now!
+  end
+  scheduler.cron "0 #{Shift.night.hour} * * 1-7" do
+    UserNotifierMailer.shift_email.deliver_now!
   end
 end

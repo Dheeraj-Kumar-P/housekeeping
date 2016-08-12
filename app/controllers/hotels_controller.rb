@@ -50,11 +50,14 @@ class HotelsController < ApplicationController
     check
     @user = User.find(params[:id])
     if @user.is_active.zero?
-      User.update(params[:id], is_active: 1)
+      @user.update_attributes!(is_active: true)
     else
-      User.update(params[:id], is_active: 0)
+      @user.update_attributes!(is_active: false)
     end
-    redirect_to action: 'show', id: @user.hotel_id
+    respond_to do |format|
+      format.html { redirect_to action: 'show', id: @user.hotel_id }
+      format.js
+    end
   end
 
   private
