@@ -43,7 +43,9 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'god'
+gem 'guard-rspec'
 gem 'rspec-rails'
+gem 'shoulda-matchers'
 gem 'omniauth-google-oauth2'
 gem 'rufus-scheduler'
 gem 'rubocop', '~> 0.42.0', require: false
