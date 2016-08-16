@@ -3,7 +3,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    #   user ||= User.new # guest user (not logged in)
     alias_action :read, :update, to: :ru
     if user.role_id == Role.admin
       can :manage, Hotel

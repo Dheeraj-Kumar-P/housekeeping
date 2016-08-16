@@ -1,0 +1,4 @@
+$('#<%=@user.id%>name').html("<%= j (render partial: 'edit_name', locals: { user: @user}) %>");
+$('#<%=@user.id%>email').html("<%= j (render partial: 'edit_email', locals: { user: @user}) %>");
+$('#<%=@user.id%>phone').html("<%= j (render partial: 'edit_phone', locals: { user: @user}) %>");
+$('#<%=@user.id%>image').html("<%= j (render partial: 'edit_image', locals: { user: @user}) %>");

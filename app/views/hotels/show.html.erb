@@ -15,12 +15,21 @@
 		<% @staffs = User.where(hotel_id: params[:id], role_id: Role.staff).find_each %>
 		<% @staffs.each do |staff|%>
 			<tr>
-				<td>&emsp;<%= image_tag staff.image.url(:thumb) %></td><td>&emsp;<%=staff.name%></td><td><%=staff.email%></td><td><%=staff.phone_no%></td>
-				<td style='width:15%;' id="<%= staff.id%>">
-						<%= render partial: 'button', locals: { user: staff} %>
-		    </td>
-				<td style='width:10%'><%= link_to 'Edit', {:controller =>'users',:action=>'edit',:id=>staff.id},  class: 'btn btn-info'%>
+				<td id="<%= staff.id%>image">
+					<%= render partial: 'image', locals: { user: staff}%>
 				</td>
+				<td id="<%= staff.id%>name">
+					<%= render partial: 'name', locals: { user: staff} %>
+				</td>
+				<td id="<%= staff.id%>email">
+					<%= render partial: 'email', locals: { user: staff} %>
+				</td>
+				<td id="<%= staff.id%>phone">
+					<%= render partial: 'phone', locals: { user: staff} %>
+				</td>
+				<td style='width:15%;' id="<%= staff.id%>">
+					<%= render partial: 'button', locals: { user: staff} %>
+		    </td>
 			</tr>
 		<%end%>
 		</table>
@@ -35,12 +44,21 @@
 			</tr>
 			<%= @maids.each do |maid|%>
 			<tr>
-				<td>&emsp;<%= image_tag maid.image.url(:thumb) %></td><td>&emsp;<%=maid.name%></td><td><%=maid.email%></td><td><%=maid.phone_no%></td>
-				<td style='width:15%' id="<%= maid.id%>">
-					<%= render partial: 'button', locals: { user: maid} %>
-				</td>	
-				<td style='width:10%'><%= link_to 'Edit', {:controller =>'users',:action=>'edit',:id=>maid.id},  class: 'btn btn-info'%>
+				<td id="<%= maid.id%>image">
+					<%= render partial: 'image', locals: { user: maid}%>
 				</td>
+				<td id="<%= maid.id%>name">
+					<%= render partial: 'name', locals: { user: maid} %>
+				</td>
+				<td id="<%= maid.id%>email">
+					<%= render partial: 'email', locals: { user: maid} %>
+				</td>
+				<td id="<%= maid.id%>phone">
+					<%= render partial: 'phone', locals: { user: maid} %>
+				</td>
+				<td style='width:15%;' id="<%= maid.id%>">
+					<%= render partial: 'button', locals: { user: maid} %>
+		    </td>
 			</tr>
 			<%end%> 
 		</table>

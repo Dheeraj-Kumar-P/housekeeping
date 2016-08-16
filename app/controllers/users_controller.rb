@@ -1,9 +1,9 @@
 # User controller
 class UsersController < ApplicationController
   before_action :authorize
-  # load_and_authorize_resource
   require 'rmagick'
   include Magick
+  skip_before_filter :verify_authenticity_token, only: [:update]
 
   def new
     check
@@ -44,29 +44,42 @@ class UsersController < ApplicationController
   def update
     check
     @user = User.find(params[:id])
-    begin
-      User.update(params[:id], update_attrs(params))
-    rescue StandardError => e
-      flash[:error] = e.message
-      redirect_to action: 'edit', id: params[:id]
-    else
-      flash[:success] = 'Successfully updated!!'
-      redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id
+    if params[:users]
+      begin
+        @user.update_attributes(update_attrs(params))
+      rescue StandardError => e
+        flash[:error] = e.message
+        redirect_to action: 'edit', id: params[:id]
+      else
+        respond_to do |format|
+          format.html { redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id }
+          format.js
+        end
+      end
+    end
+  end
+
+  def redirect
+    @user = User.find(params[:id])
+    respond_to do |format|
+      format.html { redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id }
+      format.js
     end
   end
 
   private
 
   def update_attrs(params)
-    if params[:users][:image].nil?
-      { name: params[:users][:name],
-        email: params[:users][:email],
-        phone_no: params[:users][:phone_no] }
+    if params[:users][:name]
+      { name: params[:users][:name] }
+    elsif params[:users][:email]
+      { email: params[:users][:email] }
+    elsif params[:users][:phone_no]
+      { phone_no: params[:users][:phone_no] }
+    elsif params[:users][:image]
+      { image: params[:users][:image] }
     else
-      { name: params[:users][:name],
-        email: params[:users][:email],
-        phone_no: params[:users][:phone_no],
-        image: params[:users][:image] }
+      {}
     end
   end
 

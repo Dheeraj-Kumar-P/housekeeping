@@ -1,0 +1,4 @@
+<%= form_tag({:controller => "users", :action => "update", :id=>user.id}, remote: true) do%>
+	<%= number_field(:users, :phone_no, value: @user.phone_no)%>
+	<%= submit_tag "Update"%>
+<%end%>

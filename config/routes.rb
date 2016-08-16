@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :users, only: [:create, :edit] do
     get 'new', on: :member
     post 'update', on: :member
+    get 'redirect', on: :member
   end
   resources :admin, only: 'show'
   resources :staff, only: [:show, :edit] do

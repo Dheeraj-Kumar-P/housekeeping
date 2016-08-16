@@ -1,0 +1,4 @@
+<%= form_tag({:controller => "users", :action => "update", :id=> user.id }, { :remote => true , :multipart => true }) do%>
+	<%= file_field(:users, :image)%>
+	<%= submit_tag "Update"%>
+<%end%>
