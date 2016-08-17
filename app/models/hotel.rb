@@ -12,5 +12,4 @@ class Hotel < ApplicationRecord
   validates_attachment_content_type :photo, content_type: /\Aimage\/.*\Z/
   has_many :rooms
   has_many :users
-  # has_attached_file :photo
 end

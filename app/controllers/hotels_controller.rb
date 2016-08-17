@@ -1,12 +1,12 @@
 # Hotels Controller
 class HotelsController < ApplicationController
   before_action :authorize
+  before_action :check
   def new
     check
   end
 
   def create
-    check
     begin
       Hotel.create(create_attrs(params))
     rescue StandardError => e
@@ -22,12 +22,10 @@ class HotelsController < ApplicationController
   end
 
   def edit
-    check
     @hotel = Hotel.find(params[:id])
   end
 
   def update
-    check
     begin
       Hotel.update(params[:id], update_attrs(params))
     rescue StandardError => e
@@ -40,14 +38,12 @@ class HotelsController < ApplicationController
   end
 
   def show
-    check
     @hotel = Hotel.find(params[:id])
     @staffs = User.where(hotel_id: params[:id], role_id: Role.staff).find_each
     @maids = User.where(hotel_id: params[:id], role_id: Role.maid).find_each
   end
 
   def block
-    check
     @user = User.find(params[:id])
     if @user.is_active.zero?
       @user.update_attributes!(is_active: true)

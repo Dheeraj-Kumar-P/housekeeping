@@ -20,12 +20,12 @@ class MaidController < ApplicationController
 
   def update
     check
-    @user = User.find(params[:id])
+    @user = User.find(session[:user_id])
     begin
       User.update(params[:id], update_attrs(params))
     rescue StandardError => e
       flash[:error] = e.message
-      redirect_to action: 'edit', id: params[:id]
+      redirect_to action: 'edit', id: session[:user_id]
     else
       flash[:success] = 'Successfully updated!!'
       redirect_to action: 'show', id: session[:user_id]
@@ -65,7 +65,11 @@ class MaidController < ApplicationController
     check
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
     TaskAssignment.update(@task.id, start_time: Time.now)
-    flash[:success] = "Task started at #{Time.now.hour}:#{Time.now.min}"
+    min = Time.now.min
+    if min < 10
+      min = '0' + min
+    end
+    flash[:success] = "Task started at #{Time.now.hour}:#{min}"
     redirect_to controller: 'maid', action: 'show', id: @task.user_id
   end
 

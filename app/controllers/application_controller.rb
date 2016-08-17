@@ -41,11 +41,10 @@ class ApplicationController < ActionController::Base
   # scheduler.in '1s' do
   #   Shift.morning
   # end
-  @a = 11
-
-  scheduler.cron "0 #{@a} * * 1-7" do
-    UserNotifierMailer.shift_email.deliver_now!
-  end
+  # @a = 11
+  # scheduler.cron "0 #{@a} * * 1-7" do
+  #   UserNotifierMailer.shift_email.deliver_now!
+  # end
   scheduler.cron "0 #{Shift.morning.hour} * * 1-7" do
     UserNotifierMailer.shift_email.deliver_now!
   end

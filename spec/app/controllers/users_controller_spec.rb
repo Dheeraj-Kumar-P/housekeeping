@@ -3,7 +3,7 @@ require 'rails_helper'
 
 describe '.create' do
   it 'should create a new instance given valid attributes' do
-    user = User.create(name: 'user',
+    user = User.create(name: 'user118',
                        email: 'user@example.com',
                        password: 'test1234',
                        phone_no: '123456789')
