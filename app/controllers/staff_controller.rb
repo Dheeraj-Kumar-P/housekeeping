@@ -2,8 +2,8 @@
 class StaffController < ApplicationController
   before_action :authorize
   def show
-    check
     @staff = User.find(params[:id])
+    check(@staff.id)
 		@maids = User.where(hotel_id: @staff.hotel_id, shift_id: Shift.current_id, role_id: Role.maid).find_each
     @tasks = TaskAssignment.where(status: 'assigned').find_each
     @rooms1 = Room.where(hotel_id: @staff.hotel_id).find_each
@@ -18,13 +18,13 @@ class StaffController < ApplicationController
   end
 
   def edit
-    check
     @user = User.find(params[:id])
+    check(@user.id)
   end
 
   def update
-    check
     @user = User.find(params[:id])
+    check(@user.id)
     begin
       User.update(params[:id], update_attrs(params))
     rescue StandardError => e
@@ -51,7 +51,11 @@ class StaffController < ApplicationController
     end
   end
 
-  def check
-    authorize! :read, Shift
+  def check(id)
+    if id == session[:user_id]
+      authorize! :read, Shift
+    else
+      authorize! :destroy, Role
+    end
   end
 end

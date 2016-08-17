@@ -10,18 +10,21 @@ class Ability
       can :create, Room
       can :create, Salary
       can :read, Role
+      cannot :destroy, Role
     elsif user.role_id == Role.staff
       can :read, TaskAssignment
       can :ru, User
       can :read, Room
       can :read, Shift
       can :read, Task
+      cannot :destroy, Role
     elsif user.role_id == Role.maid
       can :manage, TaskAssignment
       can :ru, User
       can :ru, Room
       can :ru, Salary
       can :read, Role
+      cannot :destroy, Role
     end
   end
 end

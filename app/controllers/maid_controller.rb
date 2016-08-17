@@ -14,13 +14,13 @@ class MaidController < ApplicationController
   end
 
   def edit
-    check
     @user = User.find(params[:id])
+    check(@user.id)
   end
 
   def update
-    check
     @user = User.find(session[:user_id])
+    check(@user.id)
     begin
       User.update(params[:id], update_attrs(params))
     rescue StandardError => e
@@ -56,14 +56,14 @@ class MaidController < ApplicationController
   end
 
   def cleaning
-    check
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
+    check(@task.user_id)
     @room = Room.find(params[:id])
   end
 
   def start
-    check
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
+    check(@task.user_id)
     TaskAssignment.update(@task.id, start_time: Time.now)
     min = Time.now.min
     if min < 10
@@ -74,9 +74,9 @@ class MaidController < ApplicationController
   end
 
   def stop
-    check
     require 'date'
     @task = TaskAssignment.find_by(room_id: params[:id], status: 'assigned')
+    check(@task.user_id)
     TaskAssignment.update(@task.id, stop_attrs)
     @salary = Salary.find_by(user_id: @task.user_id)
     @task = TaskAssignment.find(@task.id)
@@ -144,9 +144,13 @@ class MaidController < ApplicationController
       date: Date.today }
   end
 
-  def check
-    authorize! :read, Salary
-    authorize! :manage, TaskAssignment
+  def check(id)
+    if id == session[:user_id]
+      authorize! :read, Salary
+      authorize! :manage, TaskAssignment
+    else
+      authorize! :destroy, Role
+    end
   end
 
   def check_admin
