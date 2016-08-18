@@ -9,10 +9,13 @@ class HotelsController < ApplicationController
   def create
     begin
       Hotel.create(create_attrs(params))
+      @hotel = Hotel.last
     rescue StandardError => e
       flash[:error] = e.message
       redirect_to action: 'new'
     else
+      Image.create(image_attr(params))
+      @hotel.update_attributes!(image_id: Image.last.id)
       for iteration in 101..((params[:hotels][:no_of_rooms].to_i) + 100)
         Room.create(room_attrs(iteration))
       end
@@ -28,6 +31,10 @@ class HotelsController < ApplicationController
   def update
     begin
       Hotel.update(params[:id], update_attrs(params))
+      unless params[:hotels][:imageable].nil?
+        @image = Image.find_by(imageable_id: params[:id], imageable_type: 'Hotel')
+        @image.update_attributes!(image: params[:hotels][:imageable])
+      end
     rescue StandardError => e
       flash[:error] = e.message
       redirect_to action: 'edit'
@@ -58,11 +65,16 @@ class HotelsController < ApplicationController
 
   private
 
+  def image_attr(params)
+    { image: params[:hotels][:imageable],
+      imageable_id: Hotel.last.id,
+      imageable_type: 'Hotel' }
+  end
+
   def create_attrs(params)
     { name: params[:hotels][:name],
       no_of_rooms: params[:hotels][:no_of_rooms],
-      address: params[:hotels][:address],
-      photo: params[:hotels][:photo] }
+      address: params[:hotels][:address] }
   end
 
   def room_attrs(iteration)
@@ -73,14 +85,8 @@ class HotelsController < ApplicationController
   end
 
   def update_attrs(params)
-    if params[:hotels][:photo].nil?
-      { name: params[:hotels][:name],
-        address: params[:hotels][:address] }
-    else
-      { name: params[:hotels][:name],
-        address: params[:hotels][:address],
-        photo: params[:hotels][:photo] }
-    end
+    { name: params[:hotels][:name],
+      address: params[:hotels][:address] }
   end
 
   def check

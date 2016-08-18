@@ -1,8 +1,6 @@
 # User controller
 class UsersController < ApplicationController
   before_action :authorize
-  require 'rmagick'
-  include Magick
   skip_before_filter :verify_authenticity_token, only: [:update]
 
   def new
@@ -19,6 +17,9 @@ class UsersController < ApplicationController
     else
       begin
         User.create(create_attrs(params))
+        @user = User.last
+        Image.create(image_attr(params))
+        @user.update_attributes!(image_id: Image.last.id)
       rescue StandardError => e
         if params[:roles].nil?
           flash[:error] = 'Role must be specified!!'
@@ -47,6 +48,10 @@ class UsersController < ApplicationController
     if params[:users]
       begin
         @user.update_attributes(update_attrs(params))
+        unless params[:users][:imageable].nil?
+          @image = Image.find_by(imageable_id: @user.id, imageable_type: 'User')
+          @image.update_attributes!(image: params[:users][:imageable])
+        end
       rescue StandardError => e
         flash[:error] = e.message
         redirect_to action: 'edit', id: params[:id]
@@ -69,6 +74,12 @@ class UsersController < ApplicationController
 
   private
 
+  def image_attr(params)
+    { image: params[:users][:imageable],
+      imageable_id: User.last.id,
+      imageable_type: 'User' }
+  end
+
   def update_attrs(params)
     if params[:users][:name]
       { name: params[:users][:name] }
@@ -76,8 +87,6 @@ class UsersController < ApplicationController
       { email: params[:users][:email] }
     elsif params[:users][:phone_no]
       { phone_no: params[:users][:phone_no] }
-    elsif params[:users][:image]
-      { image: params[:users][:image] }
     else
       {}
     end
@@ -92,8 +101,7 @@ class UsersController < ApplicationController
       is_active: 1,
       hotel_id: params[:id],
       role_id: params[:roles][:id],
-      shift_id: params[:shift][:id],
-      image: params[:users][:image] }
+      shift_id: params[:shift][:id] }
   end
 
   def check

@@ -1,7 +1,7 @@
+require 'cancan/matchers'
 require 'spec_helper'
 require 'rails_helper'
 describe '.create' do
-
   it 'should create a new instance given valid attributes' do
     Hotel.create(name: 'testhotel',
                  no_of_rooms: '64',
