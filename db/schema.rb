@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809054910) do
+ActiveRecord::Schema.define(version: 20160818055001) do
 
   create_table "clients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "provider"
@@ -29,10 +29,25 @@ ActiveRecord::Schema.define(version: 20160809054910) do
     t.string   "name"
     t.integer  "no_of_rooms"
     t.string   "address"
-    t.string   "photo_file_name"
+    t.string   "photo_updated_at"
+    t.string   "photo_file_size"
     t.string   "photo_content_type"
-    t.integer  "photo_file_size"
-    t.datetime "photo_updated_at"
+    t.string   "photo_file_name"
+    t.string   "image_id"
+    t.string   "integer"
+  end
+
+  create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "imageable_type"
+    t.integer  "imageable_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id", using: :btree
   end
 
   create_table "oauth_access_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -142,10 +157,12 @@ ActiveRecord::Schema.define(version: 20160809054910) do
     t.integer  "shift_id"
     t.integer  "hotel_id"
     t.integer  "role_id"
-    t.string   "image_file_name"
+    t.string   "image_updated_at"
+    t.string   "image_file_size"
     t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
+    t.string   "image_file_name"
+    t.string   "image_id"
+    t.string   "integer"
   end
 
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

@@ -1,6 +1,6 @@
 <table class='table' style='width:50%' align='center'>
 	<td><h1><%=@hotel.name%></h1></td>
-	<td><h1><%= image_tag @hotel.photo.url(:medium) %></h1></td>
+	<td><h1><%= image_tag @hotel.image.image.url(:large) %></h1></td>
 </table>
 <body style='text-align:center'>
 <p style="text-align:right	">
@@ -37,7 +37,7 @@
 		No staffs available<br>
 	<%end%>
 	<br>
-	<% if @maids.first !=nil %>
+	<% if @maids.first != nil %>
 		<h5><b>Maids</b></h5>
 		<table class="table table-bordered" style='width:60%' align='center'>
 			<tr><th style='text-align:center'>Profile</th><th style='text-align:center'>Name</th><th style='text-align:center'>Email</th><th style='text-align:center'>Phone.No</th>

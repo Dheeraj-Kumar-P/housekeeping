@@ -4,7 +4,7 @@
 	<tr><td><b>Name </td><td style='text-align:right'>: <%= text_field(:users,:name,value: @user.name) %></tr></td>
 	<tr><td><b>Email </td><td style='text-align:right'>: <%= email_field(:users, :email, value: @user.email)%></tr></td>
 	<tr><td><b>Phone no </td><td style='text-align:right'>: <%= number_field(:users, :phone_no, value: @user.phone_no)%></tr></td>
-	<tr><td><b>Profile </td><td style='text-align:right'> <%= file_field(:users, :image, value: @user.image.url)%></tr></td>
+	<tr><td><b>Profile </td><td style='text-align:right'> <%= file_field(:users, :imageable)%></tr></td>
 	</table><br>
 	<br>
 	<p style='text-align:center'>
