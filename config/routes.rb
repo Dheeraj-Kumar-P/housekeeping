@@ -8,10 +8,10 @@ Rails.application.routes.draw do
   get 'login/block'
   get 'login/ath'
   get 'application/logged'
-  resources :hotels do
-    get 'new', on: :member
+  resources :hotels, only: [:create, :edit, :show] do
+    get 'new', on: :member, as: 'new'
     get 'block', on: :member
-    post 'update', on: :member
+    post 'update', on: :member, as: 'update'
   end
   resources :users, only: [:create, :edit] do
     get 'new', on: :member
@@ -20,12 +20,12 @@ Rails.application.routes.draw do
   end
   resources :admin, only: 'show'
   resources :staff, only: [:show, :edit] do
-    post 'update', on: :member
+    post 'update', on: :member, as: 'update'
   end
   resources :maid, only: [:show, :edit] do
     get 'delete', on: :member
     get 'cleaning', on: :member
-    post 'update', on: :member
+    post 'update', on: :member, as: 'update'
     post 'start', on: :member
     post 'stop', on: :member
     post 'task', on: :member

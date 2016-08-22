@@ -16,15 +16,10 @@ class ApplicationController < ActionController::Base
 
   def logged
     unless session[:user_id].nil?
-      user = User.find_by(id: session[:user_id])
+      user = User.find(session[:user_id])
       unless user.nil?
-        if user.role_id == Role.admin
-          redirect_to controller: 'admin', action: 'show', id: user.id
-        elsif user.role_id == Role.staff
-          redirect_to controller: 'staff', action: 'show', id: user.id
-        elsif user.role_id == Role.maid
-          redirect_to controller: 'maid', action: 'show', id: user.id
-        end
+        redirect_admin(user)
+        redirect_user(user)
       end
     end
   end
@@ -34,17 +29,6 @@ class ApplicationController < ActionController::Base
   end
 
   scheduler = Rufus::Scheduler.new
-  # scheduler.in '1s' do
-  #   UserNotifierMailer.shift_email.deliver_now!
-  # end
-
-  # scheduler.in '1s' do
-  #   Shift.morning
-  # end
-  # @a = 11
-  # scheduler.cron "0 #{@a} * * 1-7" do
-  #   UserNotifierMailer.shift_email.deliver_now!
-  # end
   scheduler.cron "0 #{Shift.morning.hour} * * 1-7" do
     UserNotifierMailer.shift_email.deliver_now!
   end
@@ -53,5 +37,16 @@ class ApplicationController < ActionController::Base
   end
   scheduler.cron "0 #{Shift.night.hour} * * 1-7" do
     UserNotifierMailer.shift_email.deliver_now!
+  end
+
+  private
+
+  def redirect_admin(user)
+    redirect_to admin_path(user) if user.role_id == Role.admin
+  end
+
+  def redirect_user(user)
+    redirect_to staff_path(user) if user.role_id == Role.staff
+    redirect_to maid_path(user) if user.role_id == Role.maid
   end
 end
