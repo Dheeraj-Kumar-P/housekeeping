@@ -6,7 +6,7 @@
 	<%else%>
 		<td style="text-align:center"><h1><%= @user.name %></h1></td>
 	<%end%>
-	<td style="width:50%"><%= image_tag @user.image.url(:medium) %></td>
+	<td style="width:50%"><%= image_tag @user.image.image.url(:medium) %></td>
 	</tr>
 </table><br><br>
 <table class="table table-bordered">
