@@ -14,9 +14,4 @@ describe LoginController, type: :controller do
       expect(response).to render_template('block')
     end
   end
-  describe '#redirect' do
-    let(user) { double(class: User, role_id: Role.admin) }
-    get :redirect
-    expect(response).to redirect_to('admin_path(user)')
-  end
 end
