@@ -1,39 +1,22 @@
 # User controller
 class UsersController < ApplicationController
   before_action :authorize
+  before_action :check
   skip_before_filter :verify_authenticity_token, only: [:update]
-
+  require 'digest/md5'
   def new
     check
     @shifts = Shift.find_each
   end
 
   def create
-    check
-    require 'digest/md5'
-    if params[:users][:password] != params[:password][:password]
-      flash[:error] = 'Invalid password!!!'
-      redirect_to action: 'new', id: params[:id]
+    begin_redirect(params)
+    begin
+      user_create(params)
+    rescue StandardError => e
+      flash_error(e, params)
     else
-      begin
-        User.create(create_attrs(params))
-        @user = User.last
-        Image.create(image_attr(params))
-        @user.update_attributes!(image_id: Image.last.id)
-      rescue StandardError => e
-        if params[:roles].nil?
-          flash[:error] = 'Role must be specified!!'
-        elsif params[:shift].nil?
-          flash[:error] = 'Shift must be specified!!'
-        else
-          flash[:error] = e.message
-        end
-        redirect_to action: 'new', id: params[:id]
-      else
-        Salary.create(user_id: User.last.id)
-        flash[:success] = 'User Created !'
-        redirect_to controller: 'hotels', action: 'show', id: params[:id]
-      end
+      create_redirect(params)
     end
   end
 
@@ -43,23 +26,14 @@ class UsersController < ApplicationController
   end
 
   def update
-    check
     @user = User.find(params[:id])
     if params[:users]
       begin
-        @user.update_attributes(update_attrs(params))
-        unless params[:users][:imageable].nil?
-          @image = Image.find_by(imageable_id: @user.id, imageable_type: 'User')
-          @image.update_attributes!(image: params[:users][:imageable])
-        end
+        update_create(params)
       rescue StandardError => e
-        flash[:error] = e.message
-        redirect_to action: 'edit', id: params[:id]
+        flash_update_error(e, params[:id])
       else
-        respond_to do |format|
-          format.html { redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id }
-          format.js
-        end
+        update_respond
       end
     end
   end
@@ -67,12 +41,62 @@ class UsersController < ApplicationController
   def redirect
     @user = User.find(params[:id])
     respond_to do |format|
-      format.html { redirect_to controller: 'hotels', action: 'show', id: @user.hotel_id }
+      format.html { redirect_to hotel_path(@user.hotel_id) }
       format.js
     end
   end
 
   private
+
+  def update_respond
+    respond_to do |format|
+      format.html { redirect_to hotel_path(@user.hotel_id) }
+      format.js
+    end
+  end
+
+  def flash_update_error(error, id)
+    flash[:error] = error.message
+    redirect_to action: 'edit', id: id
+  end
+
+  def update_create(params)
+    @user.update_attributes(update_attrs(params))
+    unless params[:users][:imageable].nil?
+      @image = Image.find_by(imageable_id: @user.id, imageable_type: 'User')
+      @image.update_attributes!(image: params[:users][:imageable])
+    end
+  end
+
+  def begin_redirect(params)
+    if params[:users][:password] != params[:password][:password]
+      flash[:error] = 'Invalid password!!!'
+      redirect_to action: 'new', id: params[:id]
+    end
+  end
+
+  def create_redirect(params)
+    Salary.create(user_id: User.last.id)
+    flash[:success] = 'User Created !'
+    redirect_to controller: 'hotels', action: 'show', id: params[:id]
+  end
+
+  def flash_error(error, params)
+    if params[:roles] && params[:shift]
+      flash[:error] = error.message
+    else
+      flash[:error] = 'Role must be specified!!' if params[:roles].nil?
+      flash[:error] = 'Shift must be specified!!' if params[:shift].nil?
+    end
+    redirect_to action: 'new', id: params[:id]
+  end
+
+  def user_create(params)
+    User.create(create_attrs(params))
+    @user = User.last
+    Image.create(image_attr(params))
+    @user.update_attributes!(image_id: Image.last.id)
+  end
 
   def image_attr(params)
     { image: params[:users][:imageable],

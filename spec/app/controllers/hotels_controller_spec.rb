@@ -1,4 +1,3 @@
-require 'cancan/matchers'
 require 'spec_helper'
 require 'rails_helper'
 describe '.create' do

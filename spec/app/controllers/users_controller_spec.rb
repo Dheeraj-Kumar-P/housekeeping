@@ -38,3 +38,11 @@ describe '.create' do
     user.valid?
   end
 end
+# describe UsersController, type: :controller do
+#   describe 'GET edit' do
+#     it 'renders edit' do
+#       get :edit
+#       expect(response).to render_template('edit')
+#     end
+#   end
+# end
