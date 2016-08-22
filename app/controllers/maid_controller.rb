@@ -69,7 +69,7 @@ class MaidController < ApplicationController
     if min < 10
       min = '0' + min
     end
-    flash[:success] = "Task started at #{Time.now.hour}:#{min}"
+    flash[:notice] = "Task started at #{Time.now.hour}:#{min}"
     redirect_to controller: 'maid', action: 'show', id: @task.user_id
   end
 
@@ -108,23 +108,24 @@ class MaidController < ApplicationController
   private
 
   def create_attrs(params, room)
-    { user_id: params[:users][:id],
+    {
+      user_id: params[:users][:id],
       room_id: room.id,
       task_id: Task.first.id,
-      status: 'assigned' }
+      status: 'assigned'
+    }
   end
 
   def update_attrs(params)
-    if params[:users][:image].nil?
-      { name: params[:users][:name],
-        email: params[:users][:email],
-        phone_no: params[:users][:phone_no] }
-    else
-      { name: params[:users][:name],
-        email: params[:users][:email],
-        phone_no: params[:users][:phone_no],
-        image: params[:users][:image] }
+    resultant_hash = {
+      name: params[:users][:name],
+      email: params[:users][:email],
+      phone_no: params[:users][:phone_no]
+    }
+    if params[:users][:image].present?
+      resultant_hash[:image] = params[:users][:image]
     end
+    resultant_hash
   end
 
   def stop_attrs

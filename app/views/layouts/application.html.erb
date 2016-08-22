@@ -18,22 +18,8 @@ function checkTime(i) {
 }
 </script>
 
+<%= render partial: "layouts/flash_messages", flash: flash %> 
 <html>
-<div align='center'>
-  <% if flash[:notice] %>
-    <%= flash[:notice]%><br/>
-  <% end %>
-</div>
-<div style='color:green' align='center' id="success">
-  <% if flash[:success] %>
-    <%= flash[:success]%><br/>
-  <% end %>
-</div>
-<div style='color:red' align='center'>
-  <% if flash[:error] %>
-    <%= flash[:error]%><br/>
-  <% end %>
-</div>
   <head>
     <title>Housekeeping</title>
     <%= csrf_meta_tags %>
