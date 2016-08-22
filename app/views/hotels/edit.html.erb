@@ -8,5 +8,5 @@
 	</table><br>
 	<p><%= submit_tag "Update", class: 'btn btn-info'%></p>
 <% end %><br>
-<%= link_to 'Back', {:controller =>'admin',:action=>'show',:id =>session[:user_id]}, class: 'btn btn-info'%>
+<%= link_to 'Back', {:controller =>'hotels',:action=>'show',:id =>params[:id]}, class: 'btn btn-info'%>
 </body>
