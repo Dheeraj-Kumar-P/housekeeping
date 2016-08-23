@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     get 'block', on: :member
     post 'update', on: :member, as: 'update'
   end
-  resources :users, only: [:create, :edit] do
+  resources :users, only: [:create] do
     get 'new', on: :member
     post 'update', on: :member
     get 'redirect', on: :member

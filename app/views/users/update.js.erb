@@ -2,4 +2,6 @@ $('#<%=@user.id%>name').html("<%= j (render partial: 'hotels/name', locals: { us
 $('#<%=@user.id%>email').html("<%= j (render partial: 'hotels/email', locals: { user: @user}) %>");
 $('#<%=@user.id%>phone').html("<%= j (render partial: 'hotels/phone', locals: { user: @user}) %>");
 $('#<%=@user.id%>image').html("<%= j (render partial: 'hotels/image', locals: { user: @user}) %>");
-$("#success").html("Successfully updated!!");
+<% if @alert %>
+  alert("<%=@alert%>");
+<%end%>
