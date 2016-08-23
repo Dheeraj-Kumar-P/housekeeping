@@ -20,9 +20,9 @@ class StaffController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    check(@user.id)
     begin
       @user.update_attributes(update_attrs(params))
+      image_update(params[:users][:imageable])
     rescue StandardError => e
       flash_error(e, params[:id])
     else
@@ -66,16 +66,20 @@ class StaffController < ApplicationController
     }
   end
 
+  def image_update(image)
+    unless image.nil?
+      @image = Image.find_by(imageable_id: @user.id, imageable_type: 'User')
+      @image.update_attributes!(image: image)
+    end
+  end
+
   def update_attrs(params)
-    resultant_hash = {
+    check(@user.id)
+    {
       name: params[:users][:name],
       email: params[:users][:email],
       phone_no: params[:users][:phone_no]
     }
-    if params[:users][:image].present?
-      resultant_hash[:image] = params[:users][:image]
-    end
-    resultant_hash
   end
 
   def check(id)

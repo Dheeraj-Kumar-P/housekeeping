@@ -44,7 +44,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'god'
 gem 'guard-rspec'
+gem 'rspec'
 gem 'rspec-rails'
+gem 'rails-controller-testing'
 gem 'shoulda-matchers'
 gem 'omniauth-google-oauth2'
 gem 'rufus-scheduler'

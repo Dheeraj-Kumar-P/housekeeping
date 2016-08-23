@@ -7,7 +7,6 @@
 <th><b>&emsp;Maids</th>
 <%= form_tag(:controller=>'maid',:action=>'task',:id=>params[:id]) do%>
 	<table class="table table-bordered">
-		
 		<%= @maids.each do |maid|%>
 			<tr><td>&emsp;&emsp;<%= radio_button(:users,:id,maid.id) %>&emsp;<%= link_to maid.name, {:controller =>'maid',:action=>'show',:id =>maid.id}%></td></tr>	
 		<%end%>
