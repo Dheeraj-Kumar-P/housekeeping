@@ -9,28 +9,28 @@ describe '.create' do
                        phone_no: '123456789')
     user.valid?
   end
-  it 'should not create a new instance given blank user' do
+  it 'should create a new instance given blank user' do
     user = User.create(name: '',
                        email: 'user@example.com',
                        password: 'test1234',
                        phone_no: '123456789')
     user.valid?
   end
-  it 'should not create a new instance given blank email' do
+  it 'should create a new instance given blank email' do
     user = User.create(name: 'user',
                        email: '',
                        password: 'test1234',
                        phone_no: '123456789')
     user.valid?
   end
-  it 'should not create a new instance given blank password' do
+  it 'should create a new instance given blank password' do
     user = User.create(name: 'user',
                        email: 'user@example.com',
                        password: '',
                        phone_no: '123456789')
     user.valid?
   end
-  it 'should not create a new instance given blank phone_no' do
+  it 'should create a new instance given blank phone_no' do
     user = User.create(name: 'user',
                        email: 'user@example.com',
                        password: 'test1234',
@@ -38,11 +38,13 @@ describe '.create' do
     user.valid?
   end
 end
-# describe UsersController, type: :controller do
-#   describe 'GET edit' do
-#     it 'renders edit' do
-#       get :edit
-#       expect(response).to render_template('edit')
-#     end
-#   end
-# end
+
+describe UsersController, type: :controller do
+  it 'renders new' do
+    hotel = Hotel.create(name: 'testhotel',
+                         no_of_rooms: '64',
+                         address: 'test1234')
+    path = "users/#{hotel.id}/new"
+    expect(get: path).to route_to('users#new', id: "#{hotel.id}")
+  end
+end
