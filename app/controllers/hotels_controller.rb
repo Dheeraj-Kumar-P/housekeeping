@@ -42,10 +42,10 @@ class HotelsController < ApplicationController
 
   def block
     @user = User.find(params[:id])
-    if @user.is_active.to_i.zero?
-      @user.update_attributes!(is_active: 1)
+    if @user.is_active.zero?
+      @user.update_attributes!(is_active: true)
     else
-      @user.update_attributes!(is_active: 0)
+      @user.update_attributes!(is_active: false)
     end
     respond_to do |format|
       format.html { redirect_to action: 'show', id: @user.hotel_id }
@@ -57,7 +57,7 @@ class HotelsController < ApplicationController
 
   def flash_error(error, action)
     flash[:error] = error.message
-    redirect_to action: action
+    redirect_to action: action, id: session[:user_id]
   end
 
   def image_room_create(params)
