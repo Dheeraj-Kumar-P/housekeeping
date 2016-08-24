@@ -42,7 +42,7 @@ class HotelsController < ApplicationController
 
   def block
     @user = User.find(params[:id])
-    if @user.is_active.zero?
+    if @user.is_active.to_i.zero?
       @user.update_attributes!(is_active: true)
     else
       @user.update_attributes!(is_active: false)

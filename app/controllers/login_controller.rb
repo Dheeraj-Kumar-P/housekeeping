@@ -36,7 +36,7 @@ class LoginController < ApplicationController
   def redirect(user)
     if user.nil?
       flash_invalid
-    elsif user.is_active.zero?
+    elsif user.is_active.to_i.zero?
       redirect_to login_block_path
     else
       flash_log(user)
