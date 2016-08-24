@@ -14,5 +14,6 @@
 !/tmp/.keep
 /public/system/
 
+/public/system/
 # Ignore Byebug command history file.
 .byebug_history
