@@ -29,10 +29,6 @@ ActiveRecord::Schema.define(version: 20160818055001) do
     t.string   "name"
     t.integer  "no_of_rooms"
     t.string   "address"
-    t.string   "photo_updated_at"
-    t.string   "photo_file_size"
-    t.string   "photo_content_type"
-    t.string   "photo_file_name"
     t.string   "image_id"
     t.string   "integer"
   end
@@ -157,12 +153,7 @@ ActiveRecord::Schema.define(version: 20160818055001) do
     t.integer  "shift_id"
     t.integer  "hotel_id"
     t.integer  "role_id"
-    t.string   "image_updated_at"
-    t.string   "image_file_size"
-    t.string   "image_content_type"
-    t.string   "image_file_name"
     t.string   "image_id"
-    t.string   "integer"
   end
 
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
