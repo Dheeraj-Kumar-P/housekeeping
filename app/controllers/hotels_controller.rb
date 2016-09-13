@@ -57,7 +57,7 @@ class HotelsController < ApplicationController
 
   def flash_error(error, action)
     flash[:error] = error.message
-    redirect_to action: action
+    redirect_to action: action, id: session[:user_id]
   end
 
   def image_room_create(params)
