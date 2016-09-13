@@ -6,6 +6,7 @@ class Image < ApplicationRecord
                               medium: '150x150#',
                               thumb: '100x100#' },
                     keep_old_files: true,
+                    url: ':rails_root/public/photo/:style/:basename.:extension',
                     default_url: '/images/:style/missing.png'
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 end
